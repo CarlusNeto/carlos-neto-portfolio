@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Anton+SC&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-sans: 'Space Mono', monospace;
+  --font-serif: 'Space Mono', monospace;
+  --font-mono: 'Space Mono', monospace;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background: #000;
+  color: #fff;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Unifies every background photo/video with the warm neutral tone of the
+   Hero footage, so the page reads as one continuous set instead of
+   disconnected color palettes per section. */
+.brand-media {
+  filter: grayscale(0.6) sepia(0.12) saturate(0.9) brightness(1.04) contrast(0.94);
+}
