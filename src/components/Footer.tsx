@@ -1,6 +1,6 @@
 import SynapseXLogo from './SynapseXLogo';
 
-const IMAGE_SRC = '/images/footer-character.png';
+const IMAGE_SRC = `${import.meta.env.BASE_URL}images/footer-character.png`;
 
 const CONTACT = [
   { icon: 'bi-telephone-fill', label: '(11) 99647-4737', href: 'tel:+5511996474737' },

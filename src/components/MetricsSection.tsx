@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 
-const IMAGE_SRC = '/images/metrics-character.png';
+const IMAGE_SRC = `${import.meta.env.BASE_URL}images/metrics-character.png`;
 
 const METRICS = [
   { value: '5+', label: 'Anos de Liderança em Tech' },

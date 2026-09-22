@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import ScrambleIn from './ScrambleIn';
 
-const HERO_VIDEO_SRC = '/videos/hero.mp4';
+const HERO_VIDEO_SRC = `${import.meta.env.BASE_URL}videos/hero.mp4`;
 const SENSITIVITY = 0.8;
 
 interface HeroSectionProps {
