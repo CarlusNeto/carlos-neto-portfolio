@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { MotionConfig } from 'framer-motion';
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
 import CinematicSection from './components/CinematicSection';
@@ -10,24 +10,22 @@ import Footer from './components/Footer';
 import { useLenis } from './hooks/useLenis';
 
 export default function App() {
-  const [entranceComplete, setEntranceComplete] = useState(false);
   useLenis();
 
-  useEffect(() => {
-    const timer = setTimeout(() => setEntranceComplete(true), 800);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
-    <div style={{ fontFamily: '"Space Mono", monospace' }} className="bg-black text-white">
-      <Navbar entranceComplete={entranceComplete} />
-      <HeroSection entranceComplete={entranceComplete} />
-      <CinematicSection />
-      <MetricsSection />
-      <TechnologySection />
-      <SkillsSection />
-      <ArchitectureSection />
-      <Footer />
-    </div>
+    <MotionConfig reducedMotion="user">
+      <div className="bg-black text-white font-sans">
+        <Navbar />
+        <main>
+          <HeroSection />
+          <CinematicSection />
+          <MetricsSection />
+          <TechnologySection />
+          <SkillsSection />
+          <ArchitectureSection />
+        </main>
+        <Footer />
+      </div>
+    </MotionConfig>
   );
 }

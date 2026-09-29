@@ -1,51 +1,73 @@
-import { motion } from 'framer-motion';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform, type MotionValue } from 'framer-motion';
+import { useScrollRange } from '../lib/scroll';
 
-const IMAGE_SRC = `${import.meta.env.BASE_URL}images/metrics-character.png`;
+const IMAGE_SRC = `${import.meta.env.BASE_URL}images/metrics-character.webp`;
 
 const METRICS = [
-  { value: '5+', label: 'Anos de Liderança em Tech' },
-  { value: '5', label: 'Certificações Técnicas' },
-  { value: '4', label: 'Áreas de Especialização' },
+  { value: 5, suffix: '+', label: 'Anos de liderança em tecnologia' },
+  { value: 5, suffix: '', label: 'Certificações técnicas' },
+  { value: 4, suffix: '', label: 'Áreas de especialização' },
 ];
 
-export default function MetricsSection() {
+function Metric({
+  metric,
+  index,
+  progress,
+}: {
+  metric: (typeof METRICS)[number];
+  index: number;
+  progress: MotionValue<number>;
+}) {
+  const start = 0.3 + index * 0.08;
+  const count = useTransform(progress, [start, start + 0.25], [0, metric.value]);
+  const rounded = useTransform(count, (v) => `${Math.round(v)}${metric.suffix}`);
+  const opacity = useScrollRange(progress, [start - 0.05, start + 0.05], [0, 1]);
+  const y = useTransform(progress, [start - 0.05, start + 0.1], [40, 0]);
+
   return (
-    <section className="relative min-h-screen w-full overflow-hidden">
-      <img
-        src={IMAGE_SRC}
-        alt=""
-        className="brand-media absolute inset-0 z-0 w-full h-full object-cover"
-      />
+    <motion.div className="text-center" style={{ opacity, y }}>
+      <motion.div className="text-gradient font-semibold tracking-[-0.05em] leading-none text-[clamp(72px,13vw,168px)]">
+        {rounded}
+      </motion.div>
+      <div className="text-white/60 text-[15px] sm:text-[17px] mt-3">{metric.label}</div>
+    </motion.div>
+  );
+}
 
-      <div className="relative z-[1] flex flex-col items-center pt-32 pb-32 px-6">
-        <div className="max-w-6xl w-full">
-          <motion.p
-            className="text-white/40 text-[13px] sm:text-[14px] tracking-[0.2em] uppercase mb-20 text-center"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 1.2 }}
-          >
-            Destaques da Carreira
-          </motion.p>
+export default function MetricsSection() {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end end'] });
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-8">
+  const imageScale = useTransform(scrollYProgress, [0, 1], [1.35, 1]);
+  const dim = useScrollRange(scrollYProgress, [0, 0.3], [0.1, 0.6]);
+  const headingOpacity = useScrollRange(scrollYProgress, [0.05, 0.22], [0, 1]);
+  const headingY = useTransform(scrollYProgress, [0.05, 0.22], [60, 0]);
+
+  return (
+    <section ref={sectionRef} id="resultados" className="relative h-[240vh] bg-black">
+      <div className="sticky top-0 h-screen h-[100dvh] overflow-hidden flex items-center justify-center">
+        <motion.img
+          src={IMAGE_SRC}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ scale: imageScale }}
+        />
+        <motion.div className="absolute inset-0 bg-black" style={{ opacity: dim }} />
+
+        <div className="relative z-10 w-full max-w-[1100px] px-6">
+          <motion.div className="text-center mb-14 sm:mb-20" style={{ opacity: headingOpacity, y: headingY }}>
+            <p className="text-white/70 text-[14px] sm:text-[17px] font-semibold mb-3">Destaques da carreira</p>
+            <h2 className="text-white font-semibold tracking-[-0.04em] leading-[1] text-[clamp(38px,6.5vw,80px)]">
+              Resultados que
+              <br />
+              falam por si.
+            </h2>
+          </motion.div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-6">
             {METRICS.map((m, i) => (
-              <motion.div
-                key={m.label}
-                className="text-center"
-                initial={{ y: 30, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.8, delay: i * 0.15 }}
-              >
-                <div className="text-white text-[clamp(48px,10vw,96px)] font-light tracking-[-0.04em] leading-none">
-                  {m.value}
-                </div>
-                <div className="text-white/40 text-[13px] sm:text-[15px] mt-4 tracking-wide">
-                  {m.label}
-                </div>
-              </motion.div>
+              <Metric key={m.label} metric={m} index={i} progress={scrollYProgress} />
             ))}
           </div>
         </div>

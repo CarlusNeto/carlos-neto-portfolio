@@ -4,9 +4,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Space Mono"', 'monospace'],
-        serif: ['"Space Mono"', 'monospace'],
-        mono: ['"Space Mono"', 'monospace'],
+        // SF Pro on Apple devices, Inter everywhere else.
+        sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', 'Inter', '"Segoe UI"', 'sans-serif'],
       },
     },
   },
